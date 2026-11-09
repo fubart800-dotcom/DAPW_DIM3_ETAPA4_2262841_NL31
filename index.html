@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dimensión 4: Aplicación - Funciones Predefinidas de JavaScript</title>
+    <!-- Tailwind CSS para diseño moderno y responsive -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <!-- FontAwesome para iconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .code-font {
+            font-family: 'Fira Code', monospace;
+        }
+        .nav-link.active {
+            color: #3b82f6;
+            border-bottom: 2px solid #3b82f6;
+            background-color: rgba(59, 130, 246, 0.05);
+        }
+        .tab-content {
+            display: none;
+        }
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col">
+
+    <!-- Encabezado y Menú Horizontal -->
+    <header class="bg-slate-800/90 backdrop-blur border-b border-slate-700 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <!-- Logo / Título -->
+                <div class="flex items-center gap-3">
+                    <div class="p-2 bg-blue-600 rounded-lg text-white">
+                        <i class="fa-solid me-0 fa-code text-xl"></i>
+                    </div>
+                    <div>
+                        <h1 class="font-bold text-lg text-slate-100 leading-tight">JavaScript Lab</h1>
+                        <p class="text-xs text-slate-400">Dimensión 4: Aplicación</p>
+                    </div>
+                </div>
+
+                <!-- Menú Horizontal (Desktop) -->
+                <nav class="hidden md:flex space-x-1">
+                    <button onclick="switchTab('inicio')" id="nav-inicio" class="nav-link active px-4 py-2 rounded-t-lg text-sm font-medium transition-colors hover:text-blue-400 flex items-center gap-2">
+                        <i class="fa-solid fa-house"></i> Inicio
+                    </button>
+                    <button onclick="switchTab('prog1')" id="nav-prog1" class="nav-link px-4 py-2 rounded-t-lg text-sm font-medium transition-colors hover:text-blue-400 flex items-center gap-2">
+                        <i class="fa-solid fa-font"></i> 1. Cadenas (String)
+                    </button>
+                    <button onclick="switchTab('prog2')" id="nav-prog2" class="nav-link px-4 py-2 rounded-t-lg text-sm font-medium transition-colors hover:text-blue-400 flex items-center gap-2">
+                        <i class="fa-solid fa-calculator"></i> 2. Matemáticas (Math)
+                    </button>
+                    <button onclick="switchTab('prog3')" id="nav-prog3" class="nav-link px-4 py-2 rounded-t-lg text-sm font-medium transition-colors hover:text-blue-400 flex items-center gap-2">
+                        <i class="fa-solid fa-calendar-days"></i> 3. Fechas (Date)
+                    </button>
+                    <button onclick="switchTab('prog4')" id="nav-prog4" class="nav-link px-4 py-2 rounded-t-lg text-sm font-medium transition-colors hover:text-blue-400 flex items-center gap-2">
+                        <i class="fa-solid fa-list-ol"></i> 4. Arreglos (Array)
+                    </button>
+                </nav>
+
+                <!-- Menú Móvil Botón -->
+                <div class="md:hidden">
+                    <button id="mobile-menu-btn" class="text-slate-300 hover:text-white p-2">
+                        <i class="fa-solid fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Menú Desplegable Móvil -->
+        <div id="mobile-menu" class="hidden md:hidden border-t border-slate-700 bg-slate-800 px-4 pt-2 pb-4 space-y-1">
+            <button onclick="switchTab('inicio')" class="w-full text-left px-3 py-2 rounded-md text-base font-medium hover:bg-slate-700 flex items-center gap-2">
+                <i class="fa-solid fa-house w-6"></i> Inicio
+            </button>
+            <button onclick="switchTab('prog1')" class="w-full text-left px-3 py-2 rounded-md text-base font-medium hover:bg-slate-700 flex items-center gap-2">
+                <i class="fa-solid fa-font w-6"></i> 1. Cadenas (String)
+            </button>
+            <button onclick="switchTab('prog2')" class="w-full text-left px-3 py-2 rounded-md text-base font-medium hover:bg-slate-700 flex items-center gap-2">
+                <i class="fa-solid fa-calculator w-6"></i> 2. Matemáticas (Math)
+            </button>
+            <button onclick="switchTab('prog3')" class="w-full text-left px-3 py-2 rounded-md text-base font-medium hover:bg-slate-700 flex items-center gap-2">
+                <i class="fa-solid fa-calendar-days w-6"></i> 3. Fechas (Date)
+            </button>
+            <button onclick="switchTab('prog4')" class="w-full text-left px-3 py-2 rounded-md text-base font-medium hover:bg-slate-700 flex items-center gap-2">
+                <i class="fa-solid fa-list-ol w-6"></i> 4. Arreglos (Array)
+            </button>
+        </div>
+    </header>
+
+    <!-- Contenido Principal -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+        <!-- ================= SECCIÓN INICIO ================= -->
+        <section id="tab-inicio" class="tab-content active space-y-8">
+            <div class="bg-slate-800 border border-slate-700 rounded-2xl p-6 sm:p-10 shadow-xl overflow-hidden relative">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+                    <div class="space-y-4">
+                        <span class="inline-block px-3 py-1 bg-blue-500/10 text-blue-400 text-xs font-semibold rounded-full border border-blue-500/20">
+                            Portafolio de Prácticas
+                        </span>
+                        <h2 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
+                            Demostración de Funciones Predefinidas en JavaScript
+                        </h2>
+                        <p class="text-slate-300 text-base leading-relaxed">
+                            Bienvenido a la aplicación web interactiva desarrollada para la <strong>Dimensión 4: Aplicación</strong>. En este laboratorio web exploraremos 4 programas clave orientados a la manipulación de texto, cálculos matemáticos, fechas y estructuras de datos.
+                        </p>
+                        <div class="pt-2 flex flex-wrap gap-3">
+                            <button onclick="switchTab('prog1')" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white text-sm font-semibold rounded-lg shadow-lg shadow-blue-600/30 transition-all flex items-center gap-2">
+                                Probar Programas <i class="fa-solid fa-arrow-right"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <!-- Imagen Temática -->
+                    <div class="relative flex justify-center">
+                        <div class="w-full max-w-md bg-gradient-to-tr from-blue-600 to-indigo-600 rounded-2xl p-1 shadow-2xl">
+                            <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?auto=format&fit=crop&w=800&q=80" 
+                                 alt="Programación en JavaScript" 
+                                 class="rounded-xl w-full h-64 sm:h-72 object-cover"
+                                 onerror="this.onerror=null; this.src='https://placehold.co/800x500/1e293b/3b82f6?text=JavaScript+Code';">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Resumen de Módulos -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                <div onclick="switchTab('prog1')" class="cursor-pointer bg-slate-800/60 hover:bg-slate-800 border border-slate-700/80 p-5 rounded-xl transition-all hover:border-blue-500/50">
+                    <div class="text-blue-400 text-2xl mb-3"><i class="fa-solid fa-font"></i></div>
+                    <h3 class="font-semibold text-white mb-1">1. String Methods</h3>
+                    <p class="text-slate-400 text-xs">Transformación de texto, longitud, reemplazo de caracteres y limpieza de espacios.</p>
+                </div>
+                <div onclick="switchTab('prog2')" class="cursor-pointer bg-slate-800/60 hover:bg-slate-800 border border-slate-700/80 p-5 rounded-xl transition-all hover:border-blue-500/50">
+                    <div class="text-green-400 text-2xl mb-3"><i class="fa-solid fa-calculator"></i></div>
+                    <h3 class="font-semibold text-white mb-1">2. Math Object</h3>
+                    <p class="text-slate-400 text-xs">Potencias, raíces cuadradas, redondeo, valor absoluto y generador aleatorio.</p>
+                </div>
+                <div onclick="switchTab('prog3')" class="cursor-pointer bg-slate-800/60 hover:bg-slate-800 border border-slate-700/80 p-5 rounded-xl transition-all hover:border-blue-500/50">
+                    <div class="text-purple-400 text-2xl mb-3"><i class="fa-solid fa-calendar-days"></i></div>
+                    <h3 class="font-semibold text-white mb-1">3. Date & Time</h3>
+                    <p class="text-slate-400 text-xs">Cálculo de diferencia de días, hora en tiempo real y formateo de fechas.</p>
+                </div>
+                <div onclick="switchTab('prog4')" class="cursor-pointer bg-slate-800/60 hover:bg-slate-800 border border-slate-700/80 p-5 rounded-xl transition-all hover:border-blue-500/50">
+                    <div class="text-amber-400 text-2xl mb-3"><i class="fa-solid fa-list-ol"></i></div>
+                    <h3 class="font-semibold text-white mb-1">4. Array Methods</h3>
+                    <p class="text-slate-400 text-xs">Ordenamiento (`sort`), filtrado (`filter`), transformación (`map`) y reversión.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= PROGRAMA 1: CADENAS ================= -->
+        <section id="tab-prog1" class="tab-content space-y-6">
+            <div class="border-b border-slate-700 pb-4">
+                <h2 class="text-2xl font-bold text-white flex items-center gap-2">
+                    <i class="fa-solid fa-font text-blue-400"></i> Programa 1: Manipulación de Cadenas de Texto
+                </h2>
+                <p class="text-slate-400 text-sm mt-1">Utiliza las funciones predefinidas de JavaScript: <code class="code-font text-blue-300">toUpperCase()</code>, <code class="code-font text-blue-300">toLowerCase()</code>, <code class="code-font text-blue-300">length</code>, <code class="code-font text-blue-300">trim()</code> y <code class="code-font text-blue-300">replace()</code>.</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <!-- Panel de Entrada -->
+                <div class="bg-slate-800 p-6 rounded-xl border border-slate-700 space-y-4">
+                    <h3 class="font-semibold text-lg text-slate-200">Entrada de Datos</h3>
+                    <div>
+                        <label class="block text-xs font-medium text-slate-400 mb-2">Ingresa una frase u oración:</label>
+                        <textarea id="str-input" rows="3" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-3 text-slate-100 focus:outline-none focus:border-blue-500" placeholder="Escribe aquí tu texto...">  ¡Hola Mundo desde JavaScript!  </textarea>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-xs font-medium text-slate-400 mb-1">Buscar palabra:</label>
+                            <input type="text" id="str-search" value="Mundo" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-sm text-slate-100">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-slate-400 mb-1">Reemplazar por:</label>
+                            <input type="text" id="str-replace" value="Estudiante" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2 text-sm text-slate-100">
+                        </div>
+                    </div>
+
+                    <button onclick="processStrings()" class="w-full bg-blue-600 hover:bg-blue-500 text-white font-medium py-2.5 rounded-lg transition-colors flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-play"></i> Procesar Texto
+                    </button>
+                </div>
+
+                <!-- Panel de Resultados -->
+                <div class="bg-slate-800 p-6 rounded-xl border border-slate-700 space-y-4">
+                    <h3 class="font-semibold text-lg text-slate-200">Resultados Obtenidos</h3>
+                    
+                    <div class="space-y-3 text-sm">
+                        <div class="bg-slate-900/80 p-3 rounded-lg border border-slate-700/50">
+                            <span class="text-xs text-slate-400 block font-semibold">Mayúsculas (.toUpperCase()):</span>
+                            <span id="res-upper" class="code-font text-blue-400 break-all">-</span>
+                        </div>
+                        <div class="bg-slate-900/80 p-3 rounded-lg border border-slate-700/50">
+                            <span class="text-xs text-slate-400 block font-semibold">Minúsculas (.toLowerCase()):</span>
+                            <span id="res-lower" class="code-font text-blue-400 break-all">-</span>
+                        </div>
+                        <div class="bg-slate-900/80 p-3 rounded-lg border border-slate-700/50">
+                            <span class="text-xs text-slate-400 block font-semibold">Longitud total (.length):</span>
+                            <span id="res-length" class="code-font text-green-400 font-bold">-</span> caracteres
+                        </div>
+                        <div class="bg-slate-900/80 p-3 rounded-lg border border-slate-700/50">
+                            <span class="text-xs text-slate-400 block font-semibold">Sin espacios extremos (.trim()):</span>
+                            <span id="res-trim" class="code-font text-amber-400 break-all">-</span>
+                        </div>
+                        <div class="bg-slate-900/80 p-3 rounded-lg border border-slate-700/50">
+                            <span class="text-xs text-slate-400 block font-semibold">Texto Reemplazado (.replace()):</span>
+                            <span id="res-replaced" class="code-font text-purple-400 break-all">-</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= PROGRAMA 2: MATEMÁTICAS ================= -->
+        <section id="tab-prog2" class="tab-content space-y-6">
+            <div class="border-b border-slate-700 pb-4">
+                <h2 class="text-2xl font-bold text-white flex items-center gap-2">
+                    <i class="fa-solid fa-calculator text-green-400"></i> Programa 2: Calculadora y Funciones Math
+                </h2>
+                <p class="text-slate-400 text-sm mt-1">Aplica funciones del objeto matemático predefinido: <code class="code-font text-green-300">Math.pow()</code>, <code class="code-font text-green-300">Math.sqrt()</code>, <code class="code-font text-green-300">Math.abs()</code>, <code class="code-font text-green-300">Math.round()</code> y <code class="code-font text-green-300">Math.random()</code>.</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <!-- Entradas -->
+                <div class="bg-slate-800 p-6 rounded-xl border border-slate-700 space-y-4">
+                    <h3 class="font-semibold text-lg text-slate-200">Parámetros Numéricos</h3>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-medium text-slate-400 mb-1">Número Base (X):</label>
+                            <input type="number" id="math-num1" value="16.75" step="any" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-slate-100">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-medium text-slate-400 mb-1">Exponente (Y):</label>
+                            <input type="number" id="math-num2" value="3" step="any" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-slate-100">
+                        </div>
+                    </div>
+
+                    <button onclick="processMath()" class="w-full bg-green-600 hover:bg-green-500 text-white font-medium py-2.5 rounded-lg transition-colors flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-calculator"></i> Calcular Funciones
+                    </button>
+
+                    <div class="pt-4 border-t border-slate-700">
+                        <button onclick="generateRandom()" class="w-full bg-slate-700 hover:bg-slate-600 text-slate-200 font-medium py-2 rounded-lg transition-colors text-sm flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-dice"></i> Generar Número Aleatorio (Math.random)
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Resultados -->
+                <div class="bg-slate-800 p-6 rounded-xl border border-slate-700 space-y-4">
+                    <h3 class="font-semibold text-lg text-slate-200">Resultados Math</h3>
+                    
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
+                        <div class="bg-slate-900/80 p-3 rounded-lg border border-slate-700/50">
+                            <span class="text-xs text-slate-400 block font-semibold">Potencia (Math.pow(X, Y)):</span>
+                            <span id="math-pow" class="code-font text-green-400 text-lg font-bold">-</span>
+                        </div>
+                        <div class="bg-slate-900/80 p-3 rounded-lg border border-slate-700/50">
+                            <span class="text-xs text-slate-400 block font-semibold">Raíz Cuadrada (Math.sqrt(X)):</span>
+                            <span id="math-sqrt" class="code-font text-green-400 text-lg font-bold">-</span>
+                        </div>
+                        <div class="bg-slate-900/80 p-3 rounded-lg border border-slate-700/50">
+                            <span class="text-xs text-slate-400 block font-semibold">Valor Absoluto (Math.abs(X)):</span>
+                            <span id="math-abs" class="code-font text-green-400 text-lg font-bold">-</span>
+                        </div>
+                        <div class="bg-slate-900/80 p-3 rounded-lg border border-slate-700/50">
+                            <span class="text-xs text-slate-400 block font-semibold">Redondeo (Math.round(X)):</span>
+                            <span id="math-round" class="code-font text-green-400 text-lg font-bold">-</span>
+                        </div>
+                    </div>
+
+                    <div class="bg-slate-900/80 p-4 rounded-lg border border-slate-700/50 mt-4">
+                        <span class="text-xs text-slate-400 block font-semibold mb-1">Aleatorio entre 1 y 100:</span>
+                        <div class="flex items-center justify-between">
+                            <span id="math-random" class="code-font text-amber-400 text-xl font-extrabold">-</span>
+                            <span class="text-xs text-slate-500 code-font">Math.floor(Math.random()*100)+1</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= PROGRAMA 3: FECHAS ================= -->
+        <section id="tab-prog3" class="tab-content space-y-6">
+            <div class="border-b border-slate-700 pb-4">
+                <h2 class="text-2xl font-bold text-white flex items-center gap-2">
+                    <i class="fa-solid fa-calendar-days text-purple-400"></i> Programa 3: Manejo de Fechas y Tiempo
+                </h2>
+                <p class="text-slate-400 text-sm mt-1">Trabaja con el objeto integrado <code class="code-font text-purple-300">Date()</code> para calcular lapsos de tiempo y formatear información temporal.</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <!-- Entradas -->
+                <div class="bg-slate-800 p-6 rounded-xl border border-slate-700 space-y-4">
+                    <h3 class="font-semibold text-lg text-slate-200">Calculadora de Días Entre Fechas</h3>
+                    <div>
+                        <label class="block text-xs font-medium text-slate-400 mb-1">Fecha Inicial:</label>
+                        <input type="date" id="date-start" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-slate-100">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-slate-400 mb-1">Fecha Final:</label>
+                        <input type="date" id="date-end" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-2.5 text-slate-100">
+                    </div>
+
+                    <button onclick="processDates()" class="w-full bg-purple-600 hover:bg-purple-500 text-white font-medium py-2.5 rounded-lg transition-colors flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-clock"></i> Calcular Diferencia
+                    </button>
+                </div>
+
+                <!-- Resultados -->
+                <div class="bg-slate-800 p-6 rounded-xl border border-slate-700 space-y-4">
+                    <h3 class="font-semibold text-lg text-slate-200">Información de Fecha y Hora</h3>
+                    
+                    <div class="bg-slate-900/80 p-4 rounded-lg border border-slate-700/50">
+                        <span class="text-xs text-slate-400 block font-semibold mb-1">Fecha y Hora Actuales (new Date()):</span>
+                        <div id="date-current" class="code-font text-purple-300 text-sm font-semibold">Cargando...</div>
+                    </div>
+
+                    <div class="bg-slate-900/80 p-4 rounded-lg border border-slate-700/50">
+                        <span class="text-xs text-slate-400 block font-semibold mb-1">Diferencia Calculada:</span>
+                        <div class="text-2xl font-bold text-white">
+                            <span id="date-diff" class="text-purple-400 code-font">0</span> <span class="text-sm font-normal text-slate-300">días transcurridos</span>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-3 text-xs">
+                        <div class="bg-slate-900/80 p-3 rounded-lg border border-slate-700/50">
+                            <span class="text-slate-400 block font-semibold">Día de la semana:</span>
+                            <span id="date-day-name" class="code-font text-slate-200 text-sm font-bold">-</span>
+                        </div>
+                        <div class="bg-slate-900/80 p-3 rounded-lg border border-slate-700/50">
+                            <span class="text-slate-400 block font-semibold">Año Actual:</span>
+                            <span id="date-year" class="code-font text-slate-200 text-sm font-bold">-</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= PROGRAMA 4: ARREGLOS ================= -->
+        <section id="tab-prog4" class="tab-content space-y-6">
+            <div class="border-b border-slate-700 pb-4">
+                <h2 class="text-2xl font-bold text-white flex items-center gap-2">
+                    <i class="fa-solid fa-list-ol text-amber-400"></i> Programa 4: Manipulación de Arreglos (Arrays)
+                </h2>
+                <p class="text-slate-400 text-sm mt-1">Demostración interactiva de métodos de arreglos: <code class="code-font text-amber-300">sort()</code>, <code class="code-font text-amber-300">filter()</code>, <code class="code-font text-amber-300">map()</code>, <code class="code-font text-amber-300">reverse()</code> y <code class="code-font text-amber-300">join()</code>.</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <!-- Configuración del Arreglo -->
+                <div class="bg-slate-800 p-6 rounded-xl border border-slate-700 space-y-4">
+                    <h3 class="font-semibold text-lg text-slate-200">Arreglo de Calificaciones</h3>
+                    <p class="text-xs text-slate-400">Ingresa números separados por comas para evaluar:</p>
+
+                    <input type="text" id="array-input" value="85, 42, 98, 65, 73, 90, 55, 100" class="w-full bg-slate-900 border border-slate-700 rounded-lg p-3 text-slate-100 code-font">
+
+                    <div class="grid grid-cols-2 gap-3 pt-2">
+                        <button onclick="processArray('sort')" class="bg-slate-700 hover:bg-slate-600 text-slate-200 py-2 px-3 rounded-lg text-xs font-semibold flex items-center justify-center gap-1">
+                            <i class="fa-solid fa-arrow-down-1-9"></i> Ordenar (sort)
+                        </button>
+                        <button onclick="processArray('reverse')" class="bg-slate-700 hover:bg-slate-600 text-slate-200 py-2 px-3 rounded-lg text-xs font-semibold flex items-center justify-center gap-1">
+                            <i class="fa-solid fa-rotate-left"></i> Invertir (reverse)
+                        </button>
+                        <button onclick="processArray('filter')" class="bg-slate-700 hover:bg-slate-600 text-slate-200 py-2 px-3 rounded-lg text-xs font-semibold flex items-center justify-center gap-1">
+                            <i class="fa-solid fa-filter"></i> Filtrar >= 70 (filter)
+                        </button>
+                        <button onclick="processArray('map')" class="bg-slate-700 hover:bg-slate-600 text-slate-200 py-2 px-3 rounded-lg text-xs font-semibold flex items-center justify-center gap-1">
+                            <i class="fa-solid fa-plus"></i> Bonus +5 (map)
+                        </button>
+                    </div>
+
+                    <button onclick="processArray('all')" class="w-full bg-amber-600 hover:bg-amber-500 text-white font-medium py-2.5 rounded-lg transition-colors flex items-center justify-center gap-2 mt-4">
+                        <i class="fa-solid fa-bolt"></i> Ejecutar Todos los Métodos
+                    </button>
+                </div>
+
+                <!-- Resultados -->
+                <div class="bg-slate-800 p-6 rounded-xl border border-slate-700 space-y-4">
+                    <h3 class="font-semibold text-lg text-slate-200">Arreglos Resultantes</h3>
+                    
+                    <div class="space-y-3 text-sm">
+                        <div class="bg-slate-900/80 p-3 rounded-lg border border-slate-700/50">
+                            <span class="text-xs text-slate-400 block font-semibold">Arreglo Original:</span>
+                            <span id="arr-original" class="code-font text-slate-300 break-all">[ ]</span>
+                        </div>
+                        <div class="bg-slate-900/80 p-3 rounded-lg border border-slate-700/50">
+                            <span class="text-xs text-slate-400 block font-semibold">Ordenado Ascendente (.sort):</span>
+                            <span id="arr-sorted" class="code-font text-amber-400 break-all">[ ]</span>
+                        </div>
+                        <div class="bg-slate-900/80 p-3 rounded-lg border border-slate-700/50">
+                            <span class="text-xs text-slate-400 block font-semibold">Aprobados >= 70 (.filter):</span>
+                            <span id="arr-filtered" class="code-font text-green-400 break-all">[ ]</span>
+                        </div>
+                        <div class="bg-slate-900/80 p-3 rounded-lg border border-slate-700/50">
+                            <span class="text-xs text-slate-400 block font-semibold">Bonificación +5 puntos (.map):</span>
+                            <span id="arr-mapped" class="code-font text-blue-400 break-all">[ ]</span>
+                        </div>
+                        <div class="bg-slate-900/80 p-3 rounded-lg border border-slate-700/50">
+                            <span class="text-xs text-slate-400 block font-semibold">Cadena Unida con " | " (.join):</span>
+                            <span id="arr-joined" class="code-font text-purple-400 break-all">""</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Pie de Página -->
+    <footer class="bg-slate-800 border-t border-slate-700 py-6 mt-auto">
+        <div class="max-w-7xl mx-auto px-4 text-center text-slate-400 text-xs space-y-1">
+            <p>© 2026 Laboratorio de JavaScript - Dimensión 4: Aplicación</p>
+            <p class="text-slate-500">Página web desarrollada con HTML5, Tailwind CSS y JavaScript Vanilla.</p>
+        </div>
+    </footer>
+
+    <!-- Lógica en JavaScript -->
+    <script>
+        // --- Navegación entre pestañas ---
+        function switchTab(tabId) {
+            // Ocultar todas las secciones
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Desactivar todos los estilos de la barra horizontal
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.remove('active');
+            });
+
+            // Mostrar pestaña seleccionada
+            const selectedTab = document.getElementById('tab-' + tabId);
+            if (selectedTab) {
+                selectedTab.classList.add('active');
+            }
+
+            // Activar botón del menú correspondiente
+            const selectedNav = document.getElementById('nav-' + tabId);
+            if (selectedNav) {
+                selectedNav.classList.add('active');
+            }
+
+            // Cerrar menú móvil si está abierto
+            document.getElementById('mobile-menu').classList.add('hidden');
+        }
+
+        // Toggle menú móvil
+        document.getElementById('mobile-menu-btn').addEventListener('click', () => {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        });
+
+        // --- PROGRAMA 1: CADENAS (STRING) ---
+        function processStrings() {
+            const text = document.getElementById('str-input').value;
+            const searchVal = document.getElementById('str-search').value;
+            const replaceVal = document.getElementById('str-replace').value;
+
+            document.getElementById('res-upper').innerText = text.toUpperCase();
+            document.getElementById('res-lower').innerText = text.toLowerCase();
+            document.getElementById('res-length').innerText = text.length;
+            document.getElementById('res-trim').innerText = `"${text.trim()}"`;
+            
+            // Reemplazar ocurrencias
+            if (searchVal !== "") {
+                const replaced = text.replace(new RegExp(searchVal, 'g'), replaceVal);
+                document.getElementById('res-replaced').innerText = replaced;
+            } else {
+                document.getElementById('res-replaced').innerText = text;
+            }
+        }
+
+        // --- PROGRAMA 2: MATEMÁTICAS (MATH) ---
+        function processMath() {
+            const num1 = parseFloat(document.getElementById('math-num1').value) || 0;
+            const num2 = parseFloat(document.getElementById('math-num2').value) || 0;
+
+            document.getElementById('math-pow').innerText = Math.pow(num1, num2).toFixed(2);
+            document.getElementById('math-sqrt').innerText = num1 >= 0 ? Math.sqrt(num1).toFixed(2) : "Error (Negativo)";
+            document.getElementById('math-abs').innerText = Math.abs(num1);
+            document.getElementById('math-round').innerText = Math.round(num1);
+        }
+
+        function generateRandom() {
+            const randomVal = Math.floor(Math.random() * 100) + 1;
+            document.getElementById('math-random').innerText = randomVal;
+        }
+
+        // --- PROGRAMA 3: FECHAS (DATE) ---
+        function updateCurrentTime() {
+            const now = new Date();
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' };
+            
+            document.getElementById('date-current').innerText = now.toLocaleDateString('es-ES', options);
+            document.getElementById('date-day-name').innerText = now.toLocaleDateString('es-ES', { weekday: 'long' });
+            document.getElementById('date-year').innerText = now.getFullYear();
+        }
+
+        function processDates() {
+            const startInput = document.getElementById('date-start').value;
+            const endInput = document.getElementById('date-end').value;
+
+            if (startInput && endInput) {
+                const date1 = new Date(startInput);
+                const date2 = new Date(endInput);
+                
+                // Calcular diferencia en milisegundos y convertir a días
+                const diffTime = Math.abs(date2 - date1);
+                const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+                document.getElementById('date-diff').innerText = diffDays;
+            } else {
+                document.getElementById('date-diff').innerText = "0";
+            }
+        }
+
+        // Establecer fechas por defecto
+        function initDates() {
+            const today = new Date();
+            const nextWeek = new Date();
+            nextWeek.setDate(today.getDate() + 7);
+
+            document.getElementById('date-start').value = today.toISOString().split('T')[0];
+            document.getElementById('date-end').value = nextWeek.toISOString().split('T')[0];
+            
+            updateCurrentTime();
+            setInterval(updateCurrentTime, 1000);
+            processDates();
+        }
+
+        // --- PROGRAMA 4: ARREGLOS (ARRAY) ---
+        function getArrayFromInput() {
+            const raw = document.getElementById('array-input').value;
+            return raw.split(',')
+                      .map(item => parseFloat(item.trim()))
+                      .filter(item => !isNaN(item));
+        }
+
+        function processArray(action = 'all') {
+            const arr = getArrayFromInput();
+            document.getElementById('arr-original').innerText = JSON.stringify(arr);
+
+            // Sort (numérico)
+            const sorted = [...arr].sort((a, b) => a - b);
+            document.getElementById('arr-sorted').innerText = JSON.stringify(sorted);
+
+            // Filter (>= 70)
+            const filtered = arr.filter(score => score >= 70);
+            document.getElementById('arr-filtered').innerText = JSON.stringify(filtered);
+
+            // Map (+5 de bonificación)
+            const mapped = arr.map(score => Math.min(100, score + 5));
+            document.getElementById('arr-mapped').innerText = JSON.stringify(mapped);
+
+            // Join
+            const joined = arr.join(' | ');
+            document.getElementById('arr-joined').innerText = `"${joined}"`;
+        }
+
+        // Cargar ejecuciones iniciales
+        window.onload = function() {
+            processStrings();
+            processMath();
+            generateRandom();
+            initDates();
+            processArray();
+        };
+    </script>
+</body>
+</html>
